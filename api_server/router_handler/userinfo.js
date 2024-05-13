@@ -21,7 +21,9 @@ exports.getUserInfo = (req, res) => {
 //更新用户基本信息
 exports.updateUserInfo = (req, res) => {
   //定义sql语句
-  const sql = 'update users set ? where id = ?'
+  const sql = 'update users set ? where id=?'
+
+  //传入查询的id必须在 表里存在 
   //执行sql
   db.query(sql, [req.body, req.body.id], (err, results) => {
     //sdl 执行失败
@@ -61,13 +63,13 @@ exports.updatePassword = (req, res) => {
     if (results.length !== 1) return res.cc('用户不存在!')
     // 使用 bcrypt.compareSync(提交的密码，数据库中的密码) 方法验证密码是否正确
     // compareSync() 函数的返回值为布尔值，true 表示密码正确，false 表示密码错误
-    const compaerResult = bcrypt.compareSync(req.body.oldPwd, results[0].password)
+    const compaerResult = bcrypt.compareSync(req.body.old_pwd, results[0].password)
     if (!compaerResult) return res.cc('原密码错误')
 
     //更新密码的sql
     const sql = 'update users set password=? where id=?'
     //对新密码进行bcrypt加密处理
-    const newPwd = bcrypt.hashSync(req.body.newPwd, 10)
+    const newPwd = bcrypt.hashSync(req.body.new_pwd, 10)
 
     // 执行 SQL 语句，根据 id 更新用户的密码
     db.query(sql, [newPwd, req.auth.id], (err, results) => {
@@ -78,5 +80,18 @@ exports.updatePassword = (req, res) => {
       // 更新密码成功
       res.cc('更新密码成功！', 0)
     })
+  })
+}
+//更新用户头像
+exports.updateAvatar = (req, res) => {
+  //定义sql
+  const sql = 'update users set user_pic=?  where id=?'
+  db.query(sql, [req.body.avatar, req.auth.id], (err, results) => {
+    //执行sql失败
+    if (err) return res.cc(err)
+    //执行成功但影响行数不为1
+    if (results.affectedRows !== 1) return res.cc('更新头像失败')
+    //更新成功
+    return res.cc('头像更新成功!', 0)
   })
 }

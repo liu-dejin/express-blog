@@ -3,6 +3,7 @@ const express = require('express')
 //导入路由模块
 const userRouter = require('./router/user')
 const userinfoRouter = require('./router/userinfo')
+const artCateRouter = require('./router/artcate')
 //创建express服务器实例
 const app = express()
 
@@ -41,8 +42,10 @@ app.use(expressJWT.expressjwt({ secret: config.jwtSecretKey, algorithms: ['HS256
 // /api 登录注册接口
 app.use('/api', userRouter)
 // /my 都是需要权限的接口
+//用户相关接口
 app.use('/my', userinfoRouter)
-
+//文章分类接口
+app.use('/my/cate', artCateRouter)
 //全局错误中间件 捕获验证失败,把失败的结果响应给客户端
 const joi = require('joi')
 app.use((err, req, res, next) => {

@@ -12,7 +12,7 @@ const config = require('../config')
 exports.reg = (req, res) => {
   //接收表单数据
   const userinfo = req.body
-  console.log(userinfo)
+
 
   // 非空判断 前端同步处理
   if (!userinfo.username || !userinfo.password || !userinfo.repassword) {
@@ -64,8 +64,6 @@ exports.reg = (req, res) => {
       }
     })
   })
-
-
 }
 exports.login = (req, res) => {
   //收集表单数据
