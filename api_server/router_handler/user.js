@@ -82,7 +82,6 @@ exports.login = (req, res) => {
     if (!compaerResult) {
       return res.cc('登录失败')
     }
-    console.log(results)
 
     //生成jwt的token
     const user = {

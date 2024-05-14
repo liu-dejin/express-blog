@@ -23,7 +23,6 @@ exports.addArticleCates = (req, res) => {
     if (err) return res.cc(err)
     //判断分类名称和分类别名是否被占用
     if (results.length === 2) return res.cc('此分类已存在！')
-    console.log(results.length)
     if (results.length === 1 && results[0].cate_name === req.body.cate_name && results[0].cate_alias === req.body.cate_alias) return res.cc("分类名称与别名被占用，请更换后重试！")
 
     // 分别判断 分类名称 和 分类别名 是否被占用
@@ -60,7 +59,6 @@ exports.getArticleById = (req, res) => {
   const sql = 'select * from article_cate where id=?'
   db.query(sql, [req.query.id], (err, results) => {
     if (err) return res.cc(err)
-    console.log(results)
     if (results.length !== 1) return res.cc('获取文章分类数据失败')
     //获取成功
     res.send({

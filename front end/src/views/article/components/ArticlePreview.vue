@@ -27,7 +27,7 @@ const preview = async (row) => {
     cover_img: baseURL + data.cover_img,
     content: data.content
   }
-  console.log(previewData.value) // 打印渲染后的数据
+  // console.log(previewData.value) // 打印渲染后的数据
 }
 defineExpose({
   preview

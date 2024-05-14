@@ -14,7 +14,7 @@ exports.getUserInfo = (req, res) => {
     res.send({
       code: 0,
       message: '获取用户基本信息成功！',
-      data: results
+      data: results[0]
     })
   })
 }
@@ -37,8 +37,7 @@ exports.updateUserInfo = (req, res) => {
 //更新用户密码
 exports.updatePassword = (req, res) => {
   const userinfo = req.body
-  console.log(userinfo)
-  // 非空判断 前端同步处理
+  // 非空判断 前端也需做处理
   if (!userinfo.old_pwd || !userinfo.new_pwd || !userinfo.re_pwd) {
     return res.send({
       code: 1,

@@ -21,11 +21,12 @@ exports.add_cate_schema = {
 //定义删除接口的query:id 的验证模块
 const id = joi.number().integer().min(1).required()
 exports.delete_cate_schema = {
-  params: { id }
+  query: { id }
+
 }
-//定义更新接口的query:id 的验证模块
+//定义获取文章分类的query:id 的验证模块
 exports.get_cate_schema = {
-  params: { id }
+  query: { id }
 }
 //定义更新分类验证模块
 exports.update_cate_scheme = {

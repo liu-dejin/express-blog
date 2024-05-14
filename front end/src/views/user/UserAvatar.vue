@@ -4,61 +4,60 @@ import { Plus, Upload } from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores'
 import { userUpdateAvatarService } from '@/api/user'
 const userStore = useUserStore()
-
 const imgUrl = ref(userStore.user.user_pic)
-const uploadRef = ref(null)
-const onUploadFile = (UploadFile) => {
-  //基于fileReader读取图片
+const uploadRef = ref()
+const onSelectFile = (uploadFile) => {
+  // 基于 FileReader 读取图片做预览
   const reader = new FileReader()
-  reader.readAsDataURL(UploadFile.raw)
+  reader.readAsDataURL(uploadFile.raw)
   reader.onload = () => {
     imgUrl.value = reader.result
   }
-  //上传图片到服务器，并更新用户头像信息，这里省略具体实现
 }
+
 const onUpdateAvatar = async () => {
-  //发送请求更新头像
+  //判断头像大小 是否上传
+  if (imgUrl.value.length > 65535) {
+    return ElMessage.error('头像太大,请更换头像')
+  }
+  // 发送请求更新头像
   await userUpdateAvatarService(imgUrl.value)
-  //userstore 更新头像信息，
+  // userStore 重新渲染
   await userStore.getUser()
-  //提示用户
+  // 提示用户
   ElMessage.success('头像更新成功')
 }
 </script>
 
 <template>
   <page-container title="更换头像">
-    <el-row>
-      <el-col :span="12">
-        <el-upload
-          ref="uploadRef"
-          class="avatar-uploader"
-          :auto-upload="false"
-          :show-file-list="false"
-          :on-change="onUploadFile"
-        >
-          <img v-if="imgUrl" :src="imgUrl" class="avatar" />
-          <img v-else src="@/assets/avatar.jpg" width="278" />
-        </el-upload>
-        <br />
-        <el-button
-          @click="uploadRef.$el.querySelector('input').click()"
-          type="primary"
-          :icon="Plus"
-          size="large"
-        >
-          选择图片
-        </el-button>
-        <el-button
-          @click="onUpdateAvatar"
-          type="success"
-          :icon="Upload"
-          size="large"
-        >
-          上传头像
-        </el-button>
-      </el-col>
-    </el-row>
+    <el-upload
+      ref="uploadRef"
+      :auto-upload="false"
+      class="avatar-uploader"
+      :show-file-list="false"
+      :on-change="onSelectFile"
+    >
+      <img v-if="imgUrl" :src="imgUrl" class="avatar" />
+      <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+    </el-upload>
+
+    <br />
+
+    <el-button
+      @click="uploadRef.$el.querySelector('input').click()"
+      type="primary"
+      :icon="Plus"
+      size="large"
+      >选择图片</el-button
+    >
+    <el-button
+      @click="onUpdateAvatar"
+      type="success"
+      :icon="Upload"
+      size="large"
+      >上传头像</el-button
+    >
   </page-container>
 </template>
 
