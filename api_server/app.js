@@ -8,7 +8,6 @@ const articleRouter = require('./router/article')
 //创建express服务器实例
 const app = express()
 
-
 //导入并配置cors 跨域
 const cors = require('cors')
 app.use(cors())

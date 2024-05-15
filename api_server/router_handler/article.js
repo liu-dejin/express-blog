@@ -101,13 +101,14 @@ exports.queryArticleDetail = (req, res) => {
     WHERE 
       a.id =?
   `
+
   db.query(sql, [req.query.id], (err, results) => {
     if (err) return res.cc(err)
     if (results.length === 0) return res.cc('文章不存在')
     res.send({
       code: 0,
       message: '获取文章成功！',
-      data: results[0]
+      data: { ...results[0], username: req.auth.username, nickname: req.auth.nickname || '作者' }
     })
   })
 }
