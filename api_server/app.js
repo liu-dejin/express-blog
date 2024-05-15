@@ -4,6 +4,7 @@ const express = require('express')
 const userRouter = require('./router/user')
 const userinfoRouter = require('./router/userinfo')
 const artCateRouter = require('./router/artcate')
+const articleRouter = require('./router/article')
 //创建express服务器实例
 const app = express()
 
@@ -37,15 +38,19 @@ const config = require('./config')
 //解析token的中间件
 const expressJWT = require('express-jwt')
 // .unless({ path: [/^\/api\//] }) 指定哪些接口不需要进行 Token 的身份认证
-app.use(expressJWT.expressjwt({ secret: config.jwtSecretKey, algorithms: ['HS256'] }).unless({ path: [/^\/api\//] }))
+app.use(expressJWT.expressjwt({ secret: config.jwtSecretKey, algorithms: ['HS256'] }).unless({ path: [/^\/api|uploads\//] }))
 
 // /api 登录注册接口
 app.use('/api', userRouter)
 // /my 都是需要权限的接口
 //用户相关接口
 app.use('/my', userinfoRouter)
-//文章分类接口
+//文章分类相关接口
 app.use('/my/cate', artCateRouter)
+// 文章相关接口
+app.use('/my/article', articleRouter)
+//托管静态页面
+app.use('/uploads', express.static('uploads'))
 //全局错误中间件 捕获验证失败,把失败的结果响应给客户端
 const joi = require('joi')
 app.use((err, req, res, next) => {

@@ -14,8 +14,8 @@ const loading = ref(false) // loading状态
 const params = ref({
   pagenum: 1, // 当前页
   pagesize: 5, // 当前生效的每页条数
-  cate_id: '',
-  state: ''
+  cate_id: '' || undefined,
+  state: '' || undefined
 })
 
 // 基于params参数，获取文章列表
@@ -56,8 +56,8 @@ const onSearch = () => {
 // 重置逻辑 => 将筛选条件清空，重新检索，从第一页开始展示
 const onReset = () => {
   params.value.pagenum = 1 // 重置页面
-  params.value.cate_id = ''
-  params.value.state = ''
+  params.value.cate_id = undefined
+  params.value.state = undefined
   getArticleList()
 }
 

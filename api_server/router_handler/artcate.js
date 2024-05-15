@@ -41,10 +41,10 @@ exports.addArticleCates = (req, res) => {
     })
   })
 }
-//根据id删除文章
+//根据id删除文章分类
 exports.deleteCateById = (req, res) => {
 
-  //定义删除文章的sql
+  //定义删除文章分类的sql
   const sql = 'update article_cate set is_delete=1 where id=?'
   //执行sql
   // req.query get请求带参数

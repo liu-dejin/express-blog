@@ -11,14 +11,14 @@ const joi = require('joi')
 //定义分类名称和分类别名验证模块
 const cate_name = joi.string().required()
 const cate_alias = joi.string().alphanum().required()
-//定义新增分类的接口验证模块
+//定义新增分类分类的接口验证模块
 exports.add_cate_schema = {
   body: {
     cate_name,
     cate_alias
   }
 }
-//定义删除接口的query:id 的验证模块
+//定义删除文章分类接口的query:id 的验证模块
 const id = joi.number().integer().min(1).required()
 exports.delete_cate_schema = {
   query: { id }
